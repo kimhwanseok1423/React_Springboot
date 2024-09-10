@@ -11,7 +11,7 @@ const TodoIndex=lazy(() =>import("../pages/todo/IndexPage"))
 const root = createBrowserRouter([
 
     {
-        path: " ",
+        path: "",
         element: <Suspense fallback={Loading}><Main/></Suspense>
 },
 {
