@@ -1,52 +1,57 @@
-import {createSearchParams, useNavigate, useSearchParams} from "react-router-dom";
+import { useCallback, useState } from "react";
+import { createSearchParams, useNavigate, useSearchParams } from "react-router-dom"
+ const getNum =(param, defaultValue) =>{
+ if(!param){
+ return defaultValue
+ }
+ return parseInt(param)
+ }
+ const useCustomMove=() =>{
+ const navigate =useNavigate()
 
-const getNum=(param,defaultValue)=>{
-    if(!param){
-        return defaultValue
-    }
-    return parseInt(param)
-}
-const useCustomMove=()=>{
-    const navigate=useNavigate()
+ const [refresh,setRefresh]=useState(false)
+ const [queryParams] = useSearchParams()
 
-    const [queryParams]=useSearchParams()
+ const page =getNum(queryParams.get('page'), 1)
+ const size=getNum(queryParams.get('size'),10)
 
-    const page=getNum(queryParams.get('page'),1)
-    const size=getNum(queryParams.get('size'),10)
-
-    //문자열로만들어야함 page=3&size=10 이런식으로 만들려면 문법필요함
-
-    const queryDefault=createSearchParams({page,size}).toString()
+ const queryDefault =createSearchParams({page, size}).toString()
 
     const moveToList=(pageParam)=>{
         let queryStr= ""
 
-        if(pageParam) {
+        if(pageParam){
+            const pageNum=getNum(pageParam.page, 1)
+            const sizeNum=getNum(pageParam.size, 10)
+            queryStr= createSearchParams({page:pageNum, size:sizeNum}).toString()
+            }else{
+            queryStr= queryDefault
+            }
 
-            const page=getNum(queryParams.get('page'),1)
-            const size=getNum(queryParams.get('size'),10)
+            setRefresh(!refresh)
+navigate({pathname: `../list`,search:queryStr})
 
-            queryStr=createSearchParams({page,size}).toString()
-        }
-else{
-    queryStr=queryDefault
-}
-
-
-        navigate({pathname:'../list',search:queryDefault})
-    }
-
-const moveToModify=(tno) =>{
-    navigate({
-        pathname:`../modify/${tno}`,
-        search:queryDefault
-    })
-}
-
-
-    return {moveToList,moveToModify,page,size}
+            }
+const moveToRead=(tno)=>{
+navigate({
+    pathname:`../read/${tno}`,
+    search:queryDefault
+})
 
 
 }
+
+
+            const moveToModify =useCallback((num) =>{
+                console.log(queryDefault)
+                navigate({ pathname:`../modify/${num}`, search:queryDefault})
+                },[page,size])
+
+
+
+            return {moveToList, moveToModify,moveToRead, page, size,refresh}
+            }
+
+
 
 export default useCustomMove;
