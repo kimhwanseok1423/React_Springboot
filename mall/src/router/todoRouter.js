@@ -18,7 +18,7 @@ const todoRouter = () => {
 
         },{
             path: '',
-            element: <Navigate replace to={'list'}/>
+            element: <Navigate replace to={"list"}/>
         },
         {
             path: 'read/:tno',
