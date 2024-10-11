@@ -75,7 +75,7 @@ public class CustomFileUtil {
                 String contentType=file.getContentType();// mime 타입
                 if(contentType != null || contentType.startsWith("image")){
 
-                    Path thumbnailPath=Paths.get(uploadPath,"S_"+savedName);
+                    Path thumbnailPath=Paths.get(uploadPath,"s_"+savedName);
                     Thumbnails.of(savePath.toFile()).size(200,200).toFile(thumbnailPath.toFile());
 
                 }
@@ -95,7 +95,7 @@ public class CustomFileUtil {
 public ResponseEntity<Resource> getFile(String fileName){
 Resource resource=new FileSystemResource(uploadPath+File.separator+fileName);
 if(!resource.isReadable()){
-    resource=new FileSystemResource(uploadPath+File.separator+"default.png");
+    resource=new FileSystemResource(uploadPath+File.separator+"default.jpeg");
 
 }
 
@@ -115,22 +115,21 @@ return ResponseEntity.ok().headers(httpHeaders).body(resource);
     }
 
 
-    public void deleteFiles(List<String> fileNames){
-        if(fileNames ==null || fileNames.size()==0){
+    public void deleteFiles(List<String> fileNames) {
+        if(fileNames == null || fileNames.size() == 0){
             return;
         }
-        fileNames.forEach(fileName->{
-            String tumbnailFileName="s_"+fileName;
-            Path thumbnailPath=Paths.get(uploadPath,tumbnailFileName);
-            Path filePath=Paths.get(uploadPath,fileName);
+        fileNames.forEach(fileName-> {
+            //썸네일이 있는지 확인하고 삭제
+            String thumbnailFileName = "s_" + fileName;
+            Path thumbnailPath = Paths.get(uploadPath, thumbnailFileName);
+            Path filePath = Paths.get(uploadPath, fileName);
             try {
                 Files.deleteIfExists(filePath);
                 Files.deleteIfExists(thumbnailPath);
-            }catch(IOException e){
+            } catch (IOException e) {
                 throw new RuntimeException(e.getMessage());
             }
-
         });
-
     }
 }

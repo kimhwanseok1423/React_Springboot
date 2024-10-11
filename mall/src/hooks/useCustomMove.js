@@ -29,7 +29,9 @@ import { createSearchParams, useNavigate, useSearchParams } from "react-router-d
             }
 
             setRefresh(!refresh)
-navigate({pathname: `../list`,search:queryStr})
+navigate({
+    pathname: `../list`
+    ,search:queryStr})
 
             }
 const moveToRead=(tno)=>{
