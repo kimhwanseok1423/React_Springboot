@@ -94,10 +94,8 @@ return PageResponseDTO.<ProductDTO>withAll()
 
     @Override
     public void modify(ProductDTO productDTO) {
-
         // 조회
         Optional<Product> result = productRepository.findById(productDTO.getPno());
-
         Product product = result.orElseThrow();
 
         // 변경내용 반영
@@ -106,26 +104,34 @@ return PageResponseDTO.<ProductDTO>withAll()
         product.changeDesc(productDTO.getPdesc());
         product.changeDel(productDTO.isDelFlag());
 
-        // 이미지 처리를 위해 목록을 비운다.
+        // 이미지 처리
         List<String> uploadFileNames = productDTO.getUploadFileNames();
 
+        // 이전 이미지 목록을 저장
+        List<String> oldFileNames = product.getImageList().stream()
+                .map(ProductImage::getFileName)
+                .collect(Collectors.toList());
+
+        // 이미지 목록 비우기
         product.clearList();
 
-        if(uploadFileNames != null && uploadFileNames.isEmpty()) {
-
-            uploadFileNames.forEach(uploadName ->{
-                product.addImageString(uploadName);
-            });
-
+        // 새 파일 목록이 비어 있지 않을 경우 추가
+        if (uploadFileNames != null && !uploadFileNames.isEmpty()) {
+            uploadFileNames.forEach(uploadName -> product.addImageString(uploadName));
         }
 
-        // 저장될 때 파일이 문제 파일이 변경됐는지 알 수 가 없다.
+        // 저장
         productRepository.save(product);
 
+        // 여기서도 이전 파일 삭제를 원하면 oldFileNames를 사용하여 삭제할 수 있습니다.
+        // fileUtil.deleteFiles(oldFileNames);
     }
+
 
     @Override
     public void remove(Long pno) {
+
+
         productRepository.deleteById(pno);
     }
 

@@ -64,6 +64,13 @@ private final ProductService productService;
 
         log.info(uploadFileNames);
         Long pno= productService.register(productDTO);
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
         return Map.of("result",pno);
     }
 
@@ -113,6 +120,8 @@ private final ProductService productService;
 
             // 삭제한다.
             fileUtil.deleteFiles(removeFiles);
+
+            log.info(removeFiles);
         }
 
         return Map.of("RESULT", "SUCCESS");
@@ -122,8 +131,10 @@ private final ProductService productService;
     public Map<String,String> remove(@PathVariable Long pno){
         List<String> oldFileNames=productService.get(pno).getUploadFileNames();
 
+            fileUtil.deleteFiles(oldFileNames);
         productService.remove(pno);
-        fileUtil.deleteFiles(oldFileNames);
+
+        log.info(oldFileNames);
 
         return Map.of("RESULT","SUCCESS");
         }
