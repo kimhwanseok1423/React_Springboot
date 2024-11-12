@@ -1,9 +1,19 @@
-package org.zerock.apiserver1.dto;
+package org.zerock.apiserver1.domain;
 
 import jakarta.persistence.*;
+import lombok.*;
 import org.zerock.apiserver1.domain.Member;
 
-
+@Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@ToString(exclude = "owner")
+@Table(
+        name = "tbl_cart",
+        indexes = {@Index(name = "idx_cart_email",columnList = "member_owner")}
+)
 public class Cart {
 
     @Id

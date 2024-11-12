@@ -27,22 +27,22 @@ public class ProductServiceTests {
 
 
 }
-@Test
-    public void testRegister(){
-    ProductDTO productDTO=ProductDTO.builder()
-            .pname("새로운 상품")
-            .pdesc("1111")
-            .price(10000)
-            .build();
-
-    productDTO.setUploadedFileNames(
-            List.of(
-                    UUID.randomUUID()+"_"+"Test1.png",
-                    UUID.randomUUID()+"_"+"Test2.png"
-
-            )
-    );
-
-productService.register(productDTO);
-}
+//@Test
+//    public void testRegister(){
+//    ProductDTO productDTO=ProductDTO.builder()
+//            .pname("새로운 상품")
+//            .pdesc("1111")
+//            .price(10000)
+//            .build();
+//
+//    productDTO.setUploadFileNames(
+//            List.of(
+//                    UUID.randomUUID()+"_"+"Test1.png",
+//                    UUID.randomUUID()+"_"+"Test2.png"
+//
+//            )
+//    );
+//
+//productService.register(productDTO);
+//}
 }

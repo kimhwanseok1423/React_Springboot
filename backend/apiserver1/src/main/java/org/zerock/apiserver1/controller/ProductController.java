@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.zerock.apiserver1.dto.PageRequestDTO;
@@ -47,6 +48,9 @@ private final ProductService productService;
     }
 
 
+
+
+//    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @GetMapping("/list")
     public PageResponseDTO<ProductDTO> list(PageRequestDTO pageResponseDTO){
 
@@ -75,7 +79,14 @@ private final ProductService productService;
     }
 
     @GetMapping("/{pno}")
-    public ProductDTO read(@PathVariable("pno") Long pno){
+    public ProductDTO read(@PathVariable("pno") Long pno) {
+
+        try{
+            Thread.sleep(2000);
+        }catch (InterruptedException e){
+            throw new RuntimeException(e);
+        }
+
         return productService.get(pno);
     }
 

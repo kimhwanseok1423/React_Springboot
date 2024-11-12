@@ -3,6 +3,8 @@ import { getOne } from '../../api/productsApi';
 import FetchingModal from '../common/FetchingModal';
 import { API_SERVER_HOST } from '../../api/todoApi';
 import useCustomMove from '../../hooks/useCustomMove';
+import useCustomCart from '../../hooks/useCustomCart';
+import useCustomLogin from '../../hooks/useCustomLogin';
 
 
 
@@ -19,8 +21,16 @@ const host=API_SERVER_HOST
 function ReadComponent({pno}) {
 
     const [product,setProduct]=useState(initState)
+    //화면 이동용 함수
 const [fetching,setFetching]=useState(false);
+
 const {moveToList,moveToModify,page,size}=useCustomMove()
+//현재 장바구니 가져오기
+const {cartItems,changeCart}=useCustomCart();
+
+const{loginState}=useCustomLogin();
+
+
 useEffect(()=>{
     setFetching(true)
     getOne(pno).then(data=>{
@@ -30,7 +40,23 @@ useEffect(()=>{
     })
 
 },[pno]);
+const handleClickAddcart=()=>{
+    
 
+    let qty=1
+
+    const addItem=cartItems.filter(item=>item.pno === parseInt(pno))[0]
+    if(addItem){
+        if(window.confirm('이미 추가한 상품입니다. 추가하시겠습니까?')=== false){
+            return
+        }
+        qty=addItem.qty+1
+    }
+
+changeCart({email:loginState.email,qty:qty,pno:pno})
+
+
+}
     return (
         <div className = "border-2 border-sky-200 mt-10 m-2 p-4">
             {fetching ? <FetchingModal/> :<></>}
@@ -73,6 +99,15 @@ useEffect(()=>{
  )}
  </div>
  <div className="flex justify-end p-4">
+
+ <button type="button"
+ className="inline-block rounded p-4 m-2 text-xl w-32 text-white bg-gray-400"
+onClick={handleClickAddcart}
+ >
+Add Cart
+ </button>
+
+
  <button type="button"
  className="inline-block rounded p-4 m-2 text-xl w-32 text-white bg-red-500"
  onClick={() => moveToModify(pno)}

@@ -1,2 +1,14 @@
-package org.zerock.apiserver1.dto;public class CartItemDTO {
+package org.zerock.apiserver1.dto;
+
+import lombok.Data;
+
+@Data
+
+public class CartItemDTO {
+private String email;
+private Long pno;
+private int qty;
+private Long cino;
+
+
 }
