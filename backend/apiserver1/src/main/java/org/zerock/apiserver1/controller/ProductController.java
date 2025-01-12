@@ -64,7 +64,7 @@ private final ProductService productService;
         List<MultipartFile> files=productDTO.getFiles();
 
         List<String> uploadFileNames = fileUtil.saveFiles(files);
-        productDTO.setUploadFileNames(uploadFileNames);
+        productDTO.setUploadedFileNames(uploadFileNames);
 
         log.info(uploadFileNames);
         Long pno= productService.register(productDTO);
@@ -107,7 +107,7 @@ private final ProductService productService;
         List<String> currentUploadFileNames = fileUtil.saveFiles(files);
 
         // 지워지지 않는 파일들 keep files 예전 파일 그대로 있는 것
-        List<String> uploadedFileNames = productDTO.getUploadFileNames();
+        List<String> uploadedFileNames = productDTO.getUploadedFileNames();
 
         if(currentUploadFileNames != null && !currentUploadFileNames.isEmpty()) {
 
@@ -119,7 +119,7 @@ private final ProductService productService;
 
         // 오래된 파일이 문제. 지워져야 하는 파일들 처리
         // 기존 파일들을 가져온다.
-        List<String> oldFileNames = oldProductDTO.getUploadFileNames();
+        List<String> oldFileNames = oldProductDTO.getUploadedFileNames();
 
         if(oldFileNames != null && !oldFileNames.isEmpty()) {
 
@@ -140,7 +140,7 @@ private final ProductService productService;
 
         @DeleteMapping("/{pno}")
     public Map<String,String> remove(@PathVariable Long pno){
-        List<String> oldFileNames=productService.get(pno).getUploadFileNames();
+        List<String> oldFileNames=productService.get(pno).getUploadedFileNames();
 
             fileUtil.deleteFiles(oldFileNames);
         productService.remove(pno);

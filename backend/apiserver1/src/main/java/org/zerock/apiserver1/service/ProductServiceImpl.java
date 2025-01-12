@@ -47,7 +47,7 @@ private final ProductRepository productRepository;
                     .build();
 
 String imageStr= productImage.getFileName();
-productDTO.setUploadFileNames(List.of(imageStr));
+productDTO.setUploadedFileNames(List.of(imageStr));
         return productDTO;
 
         }).collect(Collectors.toList());
@@ -105,7 +105,7 @@ return PageResponseDTO.<ProductDTO>withAll()
         product.changeDel(productDTO.isDelFlag());
 
         // 이미지 처리
-        List<String> uploadFileNames = productDTO.getUploadFileNames();
+        List<String> uploadFileNames = productDTO.getUploadedFileNames();
 
         // 이전 이미지 목록을 저장
         List<String> oldFileNames = product.getImageList().stream()
@@ -153,7 +153,7 @@ return PageResponseDTO.<ProductDTO>withAll()
         List<String> fileNameList = imageList.stream().map(productImage ->
                 productImage.getFileName()).toList();
 
-        productDTO.setUploadFileNames(fileNameList);
+        productDTO.setUploadedFileNames(fileNameList);
 
 return productDTO;
     }
@@ -168,7 +168,7 @@ return productDTO;
                 .pdesc(productDTO.getPdesc())
                 .price(productDTO.getPrice())
                 .build();
-        List<String> uploadedFileNames = productDTO.getUploadFileNames();
+        List<String> uploadedFileNames = productDTO.getUploadedFileNames();
 
         if(uploadedFileNames ==null || uploadedFileNames.size()==0){
             return product;

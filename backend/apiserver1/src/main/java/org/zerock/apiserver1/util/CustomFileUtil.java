@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@Component
+@Component    // 컨트롤러에 CustomFileUtil 빈을 등록해서 사용하기 쉽게 쓰기위함
 @Log4j2
 @RequiredArgsConstructor
 
@@ -53,7 +53,7 @@ public class CustomFileUtil {
        return null;
         }
 
-        List<String> uploadNames=new ArrayList<>();
+        List<String> uploadNames=new ArrayList<>(); //업로드된 파일을 저장하기위해
         for(MultipartFile file:files){
             String savedName= UUID.randomUUID().toString()+"_"+file.getOriginalFilename();
 // 원래 파일이름에 임의의 UUID를 추가하여 업로드된 각파일에 고유한 이름을 생성함 그래야  중복파일 충돌하지않음
@@ -94,7 +94,7 @@ public class CustomFileUtil {
     }
 public ResponseEntity<Resource> getFile(String fileName){
 Resource resource=new FileSystemResource(uploadPath+File.separator+fileName);
-if(!resource.isReadable()){
+if(!resource.isReadable()){//업다면 default.jpeg로 대체
     resource=new FileSystemResource(uploadPath+File.separator+"default.jpeg");
 
 }
@@ -106,7 +106,7 @@ if(!resource.isReadable()){
         throw new RuntimeException(e);
     }
 
-    //내가 보내는 타입을 알려줘야함
+    //내가 보내는 타입을 알려줘야함  content-type = mime 타입
 
 
 

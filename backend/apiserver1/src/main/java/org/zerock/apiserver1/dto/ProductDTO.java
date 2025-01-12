@@ -22,14 +22,14 @@ public class ProductDTO {
 
     private boolean delFlag;
 
-//업로드 처리할얘
+    //업로드 처리할얘
     @Builder.Default
     private List<MultipartFile> files=new ArrayList<>();
 
 
     //조회할떄쓸거 업로드된파일
     @Builder.Default
-     private List<String> uploadFileNames=new ArrayList<>();
+     private List<String> uploadedFileNames=new ArrayList<>();
 
 
 }

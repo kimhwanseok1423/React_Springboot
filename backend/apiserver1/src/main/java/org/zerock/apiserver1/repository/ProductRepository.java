@@ -14,7 +14,7 @@ import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<Product,Long>, ProductSearch {
 
-    @EntityGraph(attributePaths = "imageList")
+
     @Query("select p from Product p where p.pno= :pno")
     Optional<Product> selectOne(@Param("pno") Long pno);
 
